@@ -91,71 +91,59 @@ export const constantRoutes = [
   },
 
   {
-    path: '/nested',
+    path: '/city',
     component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
+    redirect: '/city/cityList',
+    name: 'City',
+    meta: { title: '地区管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
+        path: 'cityList',
+        name: 'cityList',
+        component: () => import('@/views/city/index'),
+        meta: { title: '地区列表', icon: 'table' }
       },
       {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
+        path: 'addCity',
+        name: 'addCity',
+        component: () => import('@/views/city/addCity'),
+        meta: { title: '新增地区', icon: 'tree' }
+      },
+      {
+        path: 'modifyCity/:cityId',
+        name: 'modifyCity',
+        component: () => import('@/views/city/modifyCity'),
+        meta: { title: '修改地区' },
+        hidden: true
       }
     ]
   },
 
   {
-    path: 'external-link',
+    path: '/worksite',
     component: Layout,
+    redirect: '/worksite/worksiteList',
+    name: 'Worksite',
+    meta: { title: '工地管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: 'cityList',
+        name: 'cityList',
+        component: () => import('@/views/city/index'),
+        meta: { title: '工地列表', icon: 'table' }
+      },
+      {
+        path: 'addCity',
+        name: 'addCity',
+        component: () => import('@/views/city/addCity'),
+        meta: { title: '新增工地', icon: 'tree' }
+      },
+      {
+        path: 'modifyCity/:cityId',
+        name: 'modifyCity',
+        component: () => import('@/views/city/modifyCity'),
+        meta: { title: '修改工地' },
+        hidden: true
       }
     ]
   },
