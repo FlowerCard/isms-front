@@ -21,12 +21,6 @@ Vue.use(VueAxios, axios)
 import '@/icons' // icon
 import '@/permission' // permission control
 
-//引入axios模块
-import axios from 'axios'
-import VueAxios from 'vue-axios'
-//使用axios模块
-Vue.use(VueAxios,axios)
-
 
 // 在跳转前执行
 router.beforeEach((to, from, next) => {
