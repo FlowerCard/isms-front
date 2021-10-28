@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="dashboard-text">uid: {{ uid }}</div>
   </div>
 </template>
 
@@ -13,6 +13,31 @@ export default {
     ...mapGetters([
       'name'
     ])
+  },
+  data() {
+    return {
+      uid:0
+    }
+  },
+    created(){
+
+    //关键！！！：从浏览器缓存中获取myuser对象中的id值
+    var myuser = this.$store.getters.getUser;  
+    this.uid = myuser.uid;
+    console.log("store:"+this.uid);
+
+
+  },
+  mounted() {
+    //防止刷新后数据丢失
+    window.addEventListener('unload', this.saveState);
+    
+  },
+  methods: {
+    saveState() {
+      // 模块化后，调用 state 的代码修改为 this.$store.state.myuser
+      sessionStorage.setItem('userState', JSON.stringify(this.$store.state.myuser));
+    }
   }
 }
 </script>

@@ -56,29 +56,36 @@ export const constantRoutes = [
   },
 
   {
-    path: '/example',
+    path: '/user',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    redirect: '/user/user-list',
+    name: 'user',
+    meta: { title: '员工信息', icon: 'peoples' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'user-list',
+        name: 'user-list',
+        component: () => import('@/views/user/user-list'),
+        meta: { title: '员工列表', icon: 'el-icon-s-custom' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
+        path: 'update-user/:uid',
+        name: 'update-user',
+        hidden: true,
+        component: () => import('@/views/user/update-user'),
+        meta: { title: '修改员工', icon: 'tree' }
+      },
+      {
+        path: 'add-user',
+        name: 'add-user',
+        component: () => import('@/views/user/add-user'),
+        meta: { title: '添加员工', icon: 'el-icon-circle-plus-outline' }
+      },
     ]
   },
 
   {
-    path: '/form',
+    path: '/machine_type',
     component: Layout,
     children: [
       {

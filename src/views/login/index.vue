@@ -78,8 +78,8 @@ export default {
         password: '111111'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, trigger: 'blur'}],//注意，这里删除了第三个键值对
+        password: [{ required: true, trigger: 'blur'}]//注意，这里删除了第三个键值对
       },
       loading: false,
       passwordType: 'password',
@@ -106,12 +106,35 @@ export default {
       })
     },
     handleLogin() {
+      const obj = this;
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
+            var vm = this;
+            this.axios({
+              method: 'post',
+              url: 'http://localhost:8081/user/login',
+              data:obj.loginForm
+            }).then(function(response){
+              var data = response.data;
+              if(data.code==1){
+                //登陆成功
+                console.log(data.data.uid)
+                //创建myuser对象，存放后端返回的id
+                var myuser = {
+                  uid:data.data.uid
+                }
+                //把myuser存到浏览器缓存中，之后的其他页面都可以通过this.$store.getters.getUser.id的方式获取id
+                vm.$store.commit('updateUser', myuser);
+                vm.$router.push({ path: vm.redirect || '/' })
+                vm.loading = false
+              }else{
+                vm.$message.error('账号或密码错误');
+                vm.loading = false
+              }
+            }).catch();
+
           }).catch(() => {
             this.loading = false
           })
