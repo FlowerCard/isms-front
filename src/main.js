@@ -12,6 +12,12 @@ import App from './App'
 import store from './store'
 import router from './router'
 
+// 引入axios模块
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+// 使用axios模块
+Vue.use(VueAxios, axios)
+
 import '@/icons' // icon
 import '@/permission' // permission control
 
