@@ -44,7 +44,9 @@ export default {
       }).then(function(res) {
         var flag  = res.data
         obj.disabled = !flag
-        obj.$message.error('已存在，请更换名称')
+        if (!flag) {
+            obj.$message.error('已存在，请更换名称')
+        }
       })
     },
     submitForm(formName) {

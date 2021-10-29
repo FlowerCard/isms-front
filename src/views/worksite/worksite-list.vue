@@ -1,0 +1,135 @@
+<template>
+  <div>
+    <el-table :data="worksiteList" style="width: 100%" max-height="1000">
+      <el-table-column fixed prop="workId" label="编号" width="150" />
+      <el-table-column prop="workName" label="工地名称" width="200" />
+      <el-table-column prop="city.cityName" label="工地地区" width="200" />
+      <el-table-column prop="createTime" label="开工时间" width="200" />
+      <el-table-column prop="updateTime" label="更新时间" width="220" />
+      <el-table-column prop="workAddr" label="工地地址" width="800" />
+      <el-table-column fixed="right" label="操作" width="200">
+        <template slot-scope="scope">
+          <el-button
+            type="primary"
+            plain
+            @click="modifyUser(scope.row.workId)"
+          >修改</el-button>
+          <el-button
+            type="danger"
+            plain
+            @click="removeUser(scope.row.workId)"
+          >删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
+  </div>
+</template>
+
+<script>
+import Pagination from '@/components/Pagination'
+
+export default {
+  components: { Pagination },
+  data() {
+    return {
+      worksiteList: null,
+      total: 0,
+      listQuery: {
+        page: 1,
+        limit: 10
+      },
+      uid:0
+    }
+  },
+  created(){
+    //关键！！！：从浏览器缓存中获取myuser对象中的id值
+    var myuser = this.$store.getters.getUser;  
+    this.uid = myuser.uid;
+    console.log("store:"+this.uid);
+
+  },
+  mounted() {
+    //防止刷新后数据丢失
+    window.addEventListener('unload', this.saveState);
+    var obj = this
+    this.axios({
+      method: 'GET',
+      url:
+        'http://localhost:8081/worksite/worksites/' + obj.uid + "/" +
+        obj.listQuery.page +
+        '/' +
+        obj.listQuery.limit
+    }).then(function(res) {
+      var result = res.data
+      if (result.code == 1) {
+        obj.worksiteList = result.data.list
+        obj.total = result.data.total
+      } else {
+          alert(result.message)
+      }
+      
+    })
+  },
+  methods: {
+    saveState() {
+      // 模块化后，调用 state 的代码修改为 this.$store.state.myuser
+      sessionStorage.setItem('userState', JSON.stringify(this.$store.state.myuser));
+    },
+    getList() {
+      // 获取数据
+      var obj = this
+      this.axios({
+        method: 'GET',
+        url:
+          'http://localhost:8081/worksite/worksites/' + obj.uid + "/" +
+          obj.listQuery.page +
+          '/' +
+          obj.listQuery.limit
+      }).then(function(res) {
+        var result = res.data
+        obj.worksiteList = result.data.list
+        obj.total = result.data.total
+      })
+    },
+    modifyUser(workId) {
+      this.$router.push('/worksite/modifyWorksite/' + workId)
+    },
+    removeUser(cityId) {
+      var obj = this
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+          obj.axios({
+            method: 'delete',
+            url: 'http://localhost:8081/city/city/' + workId
+          }).then(function(response) {
+            var flag = response.data
+            if (flag) {
+                obj.$message({
+                message: '删除成功',
+                type: 'success'
+                })
+                obj.getList()
+            } else {
+                obj.$message.error('删除失败')
+            }
+          })
+        })
+        .catch(() => {
+          obj.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    }
+  }
+}
+</script>
