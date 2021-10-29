@@ -179,21 +179,21 @@ export const constantRoutes = [
     meta: { title: '工地管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'cityList',
-        name: 'cityList',
-        component: () => import('@/views/city/index'),
+        path: 'worksiteList',
+        name: 'worksiteList',
+        component: () => import('@/views/worksite/worksite-list'),
         meta: { title: '工地列表', icon: 'table' }
       },
       {
-        path: 'addCity',
-        name: 'addCity',
-        component: () => import('@/views/city/addCity'),
+        path: 'addWorksite',
+        name: 'addWorksite',
+        component: () => import('@/views/worksite/worksite-add'),
         meta: { title: '新增工地', icon: 'el-icon-circle-plus-outline' }
       },
       {
-        path: 'modifyCity/:cityId',
-        name: 'modifyCity',
-        component: () => import('@/views/city/modifyCity'),
+        path: 'modifyWorksite/:workId',
+        name: 'modifyWorksite',
+        component: () => import('@/views/worksite/worksite-modify'),
         meta: { title: '修改工地' },
         hidden: true
       }
