@@ -23,36 +23,36 @@ import '@/permission' // permission control
 
 
 // 在跳转前执行
-router.beforeEach((to, from, next) => {
-  // 获取用户登录状态
-  let isLogin = sessionStorage.getItem('isLogin');
+// router.beforeEach((to, from, next) => {
+//   // 获取用户登录状态
+//   let isLogin = sessionStorage.getItem('isLogin');
 
-  // 注销
-  if (to.path == '/logout') {
-    // 清空
-    sessionStorage.clear();
+//   // 注销
+//   if (to.path == '/logout') {
+//     // 清空
+//     sessionStorage.clear();
 
-    // 跳转到登录
-    next({path: '/user/user-login'});
-  }
+//     // 跳转到登录
+//     next({path: '/login'});
+//   }
 
-  // 如果请求的是登录页
-  else if (to.path == '/user/user-login') {
-    if (isLogin != null) {
-      // 跳转到首页
-      next({path: '/dashboard'});
-    }
-  }
+//   // 如果请求的是登录页
+//   else if (to.path == '/login') {
+//     if (isLogin != null) {
+//       // 跳转到首页
+//       next({path: '/dashboard'});
+//     }
+//   }
 
-  // 如果为非登录状态
-  else if (isLogin == null) {
-    // 跳转到登录页
-    next({path: '/user/user-login'});
-  }
+//   // 如果为非登录状态
+//   else if (isLogin == null) {
+//     // 跳转到登录页
+//     next({path: '/login'});
+//   }
 
-  // 下一个路由
-  next();
-});
+//   // 下一个路由
+//   next();
+// });
 
 /**
  * If you don't want to use mock-server

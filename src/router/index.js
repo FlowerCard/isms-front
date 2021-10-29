@@ -87,13 +87,58 @@ export const constantRoutes = [
   {
     path: '/machine_type',
     component: Layout,
+    redirect: '/machine_type/machine_type-list',
+    name: 'machine_type',
+    meta: { title: '设备类型管理', icon: 'el-icon-notebook-1' },
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
+        path: 'machine_type-list',
+        name: 'machine_type-list',
+        component: () => import('@/views/machine_type/machine_type-list'),
+        meta: { title: '设备类型列表', icon: 'el-icon-notebook-2' }
+      },
+      {
+        path: 'machine_type-update/:typeId',
+        name: 'machine_type-update',
+        hidden: true,
+        component: () => import('@/views/machine_type/machine_type-update'),
+        meta: { title: '修改设备类型', icon: 'tree' }
+      },
+      {
+        path: 'machine_type-add',
+        name: 'machine_type-add',
+        component: () => import('@/views/machine_type/machine_type-add'),
+        meta: { title: '添加设备类型', icon: 'el-icon-circle-plus-outline' }
+      },
+    ]
+  },
+
+  {
+    path: '/machine',
+    component: Layout,
+    redirect: '/machine/machine-list',
+    name: 'machine',
+    meta: { title: '设备管理', icon: 'el-icon-collection' },
+    children: [
+      {
+        path: 'machine-list',
+        name: 'machine-list',
+        component: () => import('@/views/machine/machine-list'),
+        meta: { title: '设备列表', icon: 'el-icon-tickets' }
+      },
+      {
+        path: 'machine-update/:mid',
+        name: 'machine-update',
+        hidden: true,
+        component: () => import('@/views/machine/machine-update'),
+        meta: { title: '修改设备', icon: 'tree' }
+      },
+      {
+        path: 'machine-add',
+        name: 'machine-add',
+        component: () => import('@/views/machine/machine-add'),
+        meta: { title: '添加设备', icon: 'el-icon-circle-plus-outline' }
+      },
     ]
   },
 
@@ -102,19 +147,19 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/city/cityList',
     name: 'City',
-    meta: { title: '地区管理', icon: 'el-icon-s-help' },
+    meta: { title: '地区管理', icon: 'el-icon-office-building' },
     children: [
       {
         path: 'cityList',
         name: 'cityList',
         component: () => import('@/views/city/index'),
-        meta: { title: '地区列表', icon: 'table' }
+        meta: { title: '地区列表', icon: 'el-icon-school' }
       },
       {
         path: 'addCity',
         name: 'addCity',
         component: () => import('@/views/city/addCity'),
-        meta: { title: '新增地区', icon: 'tree' }
+        meta: { title: '新增地区', icon: 'el-icon-circle-plus-outline' }
       },
       {
         path: 'modifyCity/:cityId',
@@ -143,7 +188,7 @@ export const constantRoutes = [
         path: 'addWorksite',
         name: 'addWorksite',
         component: () => import('@/views/worksite/worksite-add'),
-        meta: { title: '新增工地', icon: 'tree' }
+        meta: { title: '新增工地', icon: 'el-icon-circle-plus-outline' }
       },
       {
         path: 'modifyWorksite/:workId',

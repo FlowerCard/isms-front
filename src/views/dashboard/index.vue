@@ -24,7 +24,7 @@ export default {
     //关键！！！：从浏览器缓存中获取myuser对象中的id值
     var myuser = this.$store.getters.getUser;  
     this.uid = myuser.uid;
-    console.log("store:"+this.uid);
+    // console.log("store:"+this.uid);
 
 
   },
