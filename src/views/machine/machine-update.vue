@@ -1,37 +1,44 @@
 <template>
   <div id="box">
-      <h2 style="text-align: center">修改用户</h2>
+      <h2 style="text-align: center">修改设备</h2>
       <el-form ref="form" :model="fromData" label-width="80px">
-        <el-form-item label="id">
-            <el-input v-model="fromData.uid" hidden></el-input>
-        </el-form-item>
-         <el-form-item label="姓名">
-            <el-input v-model="fromData.username"  @change="existsName()"></el-input>
-        </el-form-item>
-         <el-form-item label="密码">
-            <el-input v-model="fromData.password"></el-input>
-        </el-form-item>
-         <!-- <el-form-item label="昵称">
-            <el-input v-model="fromData.nickname"></el-input>
-        </el-form-item>
-         <el-form-item label="电话">
-            <el-input v-model="fromData.telphone"></el-input>
-        </el-form-item>
-        <el-form-item label="地址">
-            <el-input v-model="fromData.address"></el-input>
-        </el-form-item> -->
 
-        <el-form-item label="身份">
-            <el-radio-group v-model="fromData.isAdmin">
-            <el-radio :label="0" value="0">员工</el-radio>
-            <el-radio :label="1" value="1">管理员</el-radio>
+            <el-input v-model="fromData.mid" type="hidden"></el-input>
+
+         <el-form-item label="设备名称">
+            <el-input v-model="fromData.mname"  @change="existsName()"></el-input>
+        </el-form-item>
+
+         <el-form-item label="所属设备">
+            <el-select v-model="typeNameQuert" >
+                <el-option v-for="item in typeNames" :key="item.typeId" :value="item.typeId" :label="item.typeName"></el-option>
+            </el-select>
+        </el-form-item>
+
+        <el-form-item label="所属工地">
+            <el-select v-model="workNameQuert" >
+                <el-option v-for="item in workNames" :key="item.value" :value="item.value" :label="item.label"></el-option>
+            </el-select>
+        </el-form-item>
+
+        <el-form-item label="是否在线">
+            <el-radio-group v-model="fromData.isOnline">
+            <el-radio :label="0" value="0">在线</el-radio>
+            <el-radio :label="1" value="1">下线</el-radio>
             </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="状态">
+        <el-form-item label="是否启用">
+            <el-radio-group v-model="fromData.isEnable">
+            <el-radio :label="0" value="0">启用</el-radio>
+            <el-radio :label="1" value="1">停用</el-radio>
+            </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="设备状态">
             <el-radio-group v-model="fromData.isDelete">
-            <el-radio :label="1" value="1">注销</el-radio>
             <el-radio :label="0" value="0">正常</el-radio>
+            <el-radio :label="1" value="1">注销</el-radio>
             </el-radio-group>
         </el-form-item>
 
@@ -48,24 +55,39 @@ export default {
     data() {
         return {
             fromData:{
-                uid:this.$route.params.uid,
-                username:"",
-                password:"",
-                isAdmin:"",
-                isDelete:"",
+                mid:this.$route.params.mid,
+                typeName:"",
+                isDelete:""
             },
-            disabled:false
+            disabled:false,
+            typeNames:[],
+            typeNameQuert:0,
+            workNames:[],
+            workNameQuert:0
         }
     },
     mounted() {
         const obj = this;
         obj.axios({
             method:"get",
-            url:"http://localhost:8081/user/findById/"+this.fromData.uid,
+            url:"http://localhost:8081/machine/findById/"+this.fromData.mid,
+        }).then(function(respones){
+            const ret = respones.data;
+            console.log(ret);
+            if(ret.code==1){
+                obj.fromData = ret.data
+                obj.typeNameQuert = ret.data.typeId
+                obj.workNameQuert = ret.data.workId
+            }
+        }),
+
+        obj.axios({
+            method:"get",
+            url:"http://localhost:8081/machine/findTypeName",
         }).then(function(respones){
             const ret = respones.data;
             if(ret.code==1){
-                obj.fromData = ret.data
+                obj.typeNames = ret.data
             }
         })
     },
@@ -74,7 +96,7 @@ export default {
             const obj = this;
             this.axios({
                 method:"put",
-                url:"http://localhost:8081/user/modifyUser",
+                url:"http://localhost:8081/type/modifyMachineType",
                 data:this.fromData
             }).then(function(respones){
                 const ret = respones.data;
@@ -86,7 +108,7 @@ export default {
 
                 // 延时跳转
                 setTimeout(function(){
-                obj.$router.push("/user/user-list")
+                obj.$router.push("/machine_type/machine_type-list")
                 },1000)
                 }else{
                     obj.$message.error('哎呀~出现了意料以外的问题呢~~');
@@ -97,7 +119,7 @@ export default {
               const obj = this;
             this.axios({
                 method:"get",
-                url:"http://localhost:8081/user/existsName/"+obj.fromData.username,
+                url:"http://localhost:8081/type/existsName/"+obj.fromData.typeName,
             }).then(function(respones){
                 const ret = respones.data;
                 if(ret.code == 1){
