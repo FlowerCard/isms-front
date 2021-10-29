@@ -1,5 +1,34 @@
 <template>
   <div>
+    <el-row :gutter="20">
+        <el-col :span="6">
+            <div class="grid-content">
+                <el-input
+                    placeholder="请输入内容"
+                    v-model="searchName"
+                    style="width:300px;margin-left:10px"
+                    clearable>
+                </el-input>
+                <el-button type="primary" icon="el-icon-search" @click="getList()">搜索</el-button>
+            </div>
+        </el-col>
+        <el-col :span="6">
+            <div class="grid-content">
+                工地地区：
+                <el-select v-model="cityId" placeholder="请选择" @change="getList()">
+                    <el-option label="请选择" value=""></el-option>
+                    <el-option
+                        v-for="item in options"
+                        :key="item.cityId"
+                        :label="item.cityName"
+                        :value="item.cityId">
+                    </el-option>
+                </el-select>
+            </div>
+        </el-col>
+        <!-- <el-col :span="6"><div class="grid-content bg-purple"></div></el-col> -->
+        <!-- <el-col :span="6"><div class="grid-content bg-purple"></div></el-col> -->
+    </el-row>
     <el-table :data="cityList" style="width: 100%" max-height="1000">
       <el-table-column fixed prop="cityId" label="编号" width="150" />
       <el-table-column prop="cityName" label="地区名称" width="600" />
@@ -39,7 +68,10 @@ export default {
       listQuery: {
         page: 1,
         limit: 10
-      }
+      },
+      searchName: '',
+      cityId: '',
+      options: null
     }
   },
   mounted() {
@@ -50,12 +82,24 @@ export default {
         'http://localhost:8081/city/cities/' +
         obj.listQuery.page +
         '/' +
-        obj.listQuery.limit
+        obj.listQuery.limit + "?searchName=" + obj.searchName + "&cityId=" + obj.cityId
     }).then(function(res) {
       var result = res.data
       if (result.code == 1) {
         obj.cityList = result.data.list
         obj.total = result.data.total
+      } else {
+          alert(result.message)
+      }
+      
+    })
+    this.axios({
+      method: 'GET',
+      url: 'http://localhost:8081/city/cities'
+    }).then(function(res) {
+      var result = res.data
+      if (result.code == 1) {
+        obj.options = result.data
       } else {
           alert(result.message)
       }
@@ -72,7 +116,7 @@ export default {
           'http://localhost:8081/city/cities/' +
           obj.listQuery.page +
           '/' +
-          obj.listQuery.limit
+          obj.listQuery.limit + "?searchName=" + obj.searchName + "&cityId=" + obj.cityId
       }).then(function(res) {
         var result = res.data
         obj.cityList = result.data.list
@@ -84,7 +128,7 @@ export default {
     },
     removeUser(cityId) {
       var obj = this
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
