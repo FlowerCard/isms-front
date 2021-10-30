@@ -119,11 +119,13 @@ export default {
             }).then(function(response){
               var data = response.data;
               if(data.code==1){
+                console.log(data);
                 //登陆成功
                 // console.log(data.data.uid)
                 //创建myuser对象，存放后端返回的id
                 var myuser = {
-                  uid:data.data.uid
+                  uid:data.data.uid,
+                  isAdmin:data.data.isAdmin
                 }
                 //把myuser存到浏览器缓存中，之后的其他页面都可以通过this.$store.getters.getUser.id的方式获取id
                 vm.$store.commit('updateUser', myuser);

@@ -12,7 +12,7 @@
 
     <el-table
     :data="tableData"
-    border
+
     style="width: 100%"
     :header-cell-style="{textAlign: 'center'}"
     :default-sort = "{prop: 'typeId', order: 'null'}">
@@ -48,12 +48,14 @@
         </template>
     </el-table-column>
 
-    <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-            <el-button type="primary" plain @click="toUpdateUser(scope.row.typeId)">修改</el-button>
-            <el-button type="danger" plain @click="deleteUser(scope.row.typeId)">删除</el-button>
-       </template>
-    </el-table-column>
+    <template v-if="isAdmin == 1">
+      <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+              <el-button type="primary" plain @click="toUpdateUser(scope.row.typeId)">修改</el-button>
+              <el-button type="danger" plain @click="deleteUser(scope.row.typeId)">删除</el-button>
+        </template>
+      </el-table-column>
+    </template>
 
   </el-table>
             <pagination
@@ -82,7 +84,12 @@ import Pagination from '@/components/Pagination'
          typeId:''
       }
     },
+    created(){
+    var myuser = this.$store.getters.getUser;  
+    this.isAdmin = myuser.isAdmin;
+  },
     mounted() {
+      window.addEventListener('unload', this.saveState);
         this.getList();
               const obj = this;
 
@@ -145,7 +152,11 @@ import Pagination from '@/components/Pagination'
             message: '已取消删除'
           });          
         });
-        }
+        },
+      saveState() {
+      // 模块化后，调用 state 的代码修改为 this.$store.state.myuser
+      sessionStorage.setItem('userState', JSON.stringify(this.$store.state.myuser));
+    }
     },
 
 

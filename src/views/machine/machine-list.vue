@@ -25,7 +25,7 @@
 
     <el-table
     :data="tableData"
-    border
+    
     style="width: 100%"
     :header-cell-style="{textAlign: 'center'}"
     :default-sort = "{prop: 'mid', order: 'null'}">
@@ -108,13 +108,14 @@
         </template>
     </el-table-column>
 
-    <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-            <el-button type="primary" plain @click="toUpdate(scope.row.mid)">修改</el-button>
-            <el-button type="danger" plain @click="toDelete(scope.row.mid)">删除</el-button>
-       </template>
-    </el-table-column>
-
+    <template v-if="isAdmin == 1">
+      <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+              <el-button type="primary" plain @click="toUpdate(scope.row.mid)">修改</el-button>
+              <el-button type="danger" plain @click="toDelete(scope.row.mid)">删除</el-button>
+        </template>
+      </el-table-column>
+    </template>
   </el-table>
             <pagination
     :total="total"
@@ -145,12 +146,14 @@ import Pagination from '@/components/Pagination'
         workId:'',
         typeNames:[],            
         workNames:[],
+        isAdmin:''
       }
     },
     created(){
     //关键！！！：从浏览器缓存中获取myuser对象中的id值
     var myuser = this.$store.getters.getUser;  
     this.uid = myuser.uid;
+    this.isAdmin = myuser.isAdmin
   },
     mounted() {
         this.getList();
