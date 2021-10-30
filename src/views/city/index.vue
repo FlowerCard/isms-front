@@ -38,20 +38,22 @@
       >
       <el-table-column fixed prop="cityId" label="编号" width="400" sortable align="center" />
       <el-table-column prop="cityName" label="地区名称" width="600" align="center" />
-      <el-table-column fixed="right" label="操作" width="500" >
-        <template slot-scope="scope">
-          <el-button
-            type="primary"
-            plain
-            @click="modifyUser(scope.row.cityId)"
-          >修改</el-button>
-          <el-button
-            type="danger"
-            plain
-            @click="removeUser(scope.row.cityId)"
-          >删除</el-button>
-        </template>
-      </el-table-column>
+      <template v-if="isAdmin == 1">
+        <el-table-column fixed="right" label="操作" width="500" align="center" >
+          <template slot-scope="scope">
+            <el-button
+              type="primary"
+              plain
+              @click="modifyUser(scope.row.cityId)"
+            >修改</el-button>
+            <el-button
+              type="danger"
+              plain
+              @click="removeUser(scope.row.cityId)"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </template>
     </el-table>
     <pagination
       :total="total"
@@ -76,11 +78,20 @@ export default {
         limit: 10
       },
       searchName: '',
+      isAdmin:'',
       cityId: '',
       options: null
     }
   },
+  created(){
+    //关键！！！：从浏览器缓存中获取myuser对象中的id值
+    var myuser = this.$store.getters.getUser;
+    this.isAdmin = myuser.isAdmin;
+
+  },
   mounted() {
+    //防止刷新后数据丢失
+    window.addEventListener('unload', this.saveState);
     var obj = this
     this.axios({
       method: 'GET',

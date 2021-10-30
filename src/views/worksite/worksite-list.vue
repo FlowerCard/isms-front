@@ -36,20 +36,22 @@
       <el-table-column prop="createTime" label="开工时间" width="200" sortable align="center" />
       <el-table-column prop="updateTime" label="更新时间" width="220" sortable align="center" />
       <el-table-column prop="workAddr" label="工地地址" width="500" align="center" />
-      <el-table-column fixed="right" label="操作" width="200" align="center" >
-        <template slot-scope="scope">
-          <el-button
-            type="primary"
-            plain
-            @click="modifyUser(scope.row.workId)"
-          >修改</el-button>
-          <el-button
-            type="danger"
-            plain
-            @click="removeUser(scope.row.workId)"
-          >删除</el-button>
-        </template>
-      </el-table-column>
+      <template v-if="isAdmin == 1">
+        <el-table-column fixed="right" label="操作" width="200" align="center" >
+          <template slot-scope="scope">
+            <el-button
+              type="primary"
+              plain
+              @click="modifyUser(scope.row.workId)"
+            >修改</el-button>
+            <el-button
+              type="danger"
+              plain
+              @click="removeUser(scope.row.workId)"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </template>
     </el-table>
     <pagination
       :total="total"
@@ -74,6 +76,7 @@ export default {
         limit: 10
       },
       uid:0,
+      isAdmin:'',
       searchName: '',
       cityId: '',
       options: null
@@ -83,6 +86,7 @@ export default {
     //关键！！！：从浏览器缓存中获取myuser对象中的id值
     var myuser = this.$store.getters.getUser;  
     this.uid = myuser.uid;
+    this.isAdmin = myuser.isAdmin;
 
   },
   mounted() {
