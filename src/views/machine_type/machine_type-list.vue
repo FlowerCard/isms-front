@@ -1,18 +1,35 @@
 <template>
 <div>
+  <el-row :gutter="20">
+    <el-col :span="6">
+      <span style="margin-left:5px;">所属设备：</span>
+        <el-select  v-model="typeId" placeholder="请选择" @change="getList()">
+          <el-option label="请选择" value=""></el-option>
+           <el-option v-for="item in typeNames" :key="item.typeId" :value="item.typeId" :label="item.typeName"></el-option>
+        </el-select>
+    </el-col>
+  </el-row>
+
     <el-table
     :data="tableData"
     border
-    style="width: 100%">
+    style="width: 100%"
+    :header-cell-style="{textAlign: 'center'}"
+    :default-sort = "{prop: 'typeId', order: 'null'}">
+
     <el-table-column
       prop="typeId"
-      label="typeId"
-      width="120">
+      label="编号"
+      width="120"
+      align="center"
+      sortable>
     </el-table-column>
+
     <el-table-column
       prop="typeName"
       label="类型名称"
-      width="600">
+      width="600"
+      align="center">
     </el-table-column>
       <!-- <el-table-column
       prop="password"
@@ -20,16 +37,18 @@
       width="120">
     </el-table-column> -->
 
-        <el-table-column
+    <el-table-column
       prop="isDelete"
       label="类型状态"
-      width="120">
+      width="120"
+      align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.isDelete == 0">正常</span>
           <span v-if="scope.row.isDelete == 1">删除</span>
         </template>
     </el-table-column>
-    <el-table-column label="操作">
+
+    <el-table-column label="操作" align="center">
         <template slot-scope="scope">
             <el-button type="primary" plain @click="toUpdateUser(scope.row.typeId)">修改</el-button>
             <el-button type="danger" plain @click="deleteUser(scope.row.typeId)">删除</el-button>
@@ -58,18 +77,31 @@ import Pagination from '@/components/Pagination'
         listQuery: {
             page: 1,
             limit: 10
-        }
+        },
+         typeNames:[], 
+         typeId:''
       }
     },
     mounted() {
         this.getList();
+              const obj = this;
+
+       obj.axios({
+            method:"get",
+            url:"http://localhost:8081/machine/findTypeName",
+        }).then(function(respones){
+            const ret = respones.data;
+            if(ret.code==1){
+                obj.typeNames = ret.data
+            }
+        })
     },
     methods: {
         getList(){
             var obj = this;
             this.axios({
                 method:"get",
-                url:"http://localhost:8081/type/findAll/"+this.listQuery.page+"/"+this.listQuery.limit
+                url:"http://localhost:8081/type/findAll/"+this.listQuery.page+"/"+this.listQuery.limit+"?typeId="+this.typeId
             }).then(function(response){
                  var result = response.data;
                  if(result.code == 1){
