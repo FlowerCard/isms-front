@@ -3,7 +3,7 @@
       <h2 style="text-align: center">添加设备类型</h2>
       <el-form :model="fromData" status-icon :rules="rules" ref="fromData" label-width="100px" class="demo-fromData">
 
-        <el-form-item label="设备名称" prop="typeName">
+        <el-form-item label="类型名称" prop="typeName">
             <el-input type="text" v-model="fromData.typeName" autocomplete="off" @change="existsName()"></el-input>
         </el-form-item>
 
@@ -45,7 +45,7 @@
                 const ret = respones.data;
                 if(ret.code==1){
                     obj.$message({
-                    message: '恭喜你，添加设备成功',
+                    message: '恭喜你，添加设备类型成功',
                     type: 'success'
                 });
 

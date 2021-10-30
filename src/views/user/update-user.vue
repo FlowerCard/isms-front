@@ -2,9 +2,9 @@
   <div id="box">
       <h2 style="text-align: center">修改用户</h2>
       <el-form ref="form" :model="fromData" label-width="80px">
-        <el-form-item label="id">
-            <el-input v-model="fromData.uid" hidden></el-input>
-        </el-form-item>
+
+            <el-input v-model="fromData.uid" type="hidden"></el-input>
+
          <el-form-item label="姓名">
             <el-input v-model="fromData.username"  @change="existsName()"></el-input>
         </el-form-item>
