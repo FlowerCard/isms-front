@@ -30,7 +30,7 @@ export default {
       cityInfo: {
         cityId: this.$route.params.cityId
       },
-      disabled: true
+      disabled: false
     }
   },
   mounted() {
@@ -40,7 +40,6 @@ export default {
       url: 'http://localhost:8081/city/' + obj.cityInfo.cityId
     }).then(function(res) {
       var result = res.data
-      console.log(result)
       obj.cityInfo = result.data
     })
   },
@@ -53,7 +52,12 @@ export default {
         data: obj.cityInfo
       }).then(function(res) {
         var flag  = res.data
-        obj.disabled = !flag
+        if (flag == 1) {
+          obj.disabled = !obj.disabled
+          obj.$message.error('已存在，请更换名称')
+        } else if (flag == 0) {
+          obj.disabled = !obj.disabled
+        }
       })
     },
     submitForm(formName) {

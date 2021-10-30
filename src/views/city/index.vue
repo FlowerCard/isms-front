@@ -38,7 +38,7 @@
       >
       <el-table-column fixed prop="cityId" label="编号" width="400" sortable align="center" />
       <el-table-column prop="cityName" label="地区名称" width="600" align="center" />
-      <el-table-column fixed="right" label="操作" width="500" align="center" >
+      <el-table-column fixed="right" label="操作" width="500" >
         <template slot-scope="scope">
           <el-button
             type="primary"
