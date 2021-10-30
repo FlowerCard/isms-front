@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">uid: {{ uid }}</div>
+    <div class="dashboard-text">智慧工地管理系统</div>
   </div>
 </template>
 

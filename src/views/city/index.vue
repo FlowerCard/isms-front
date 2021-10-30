@@ -29,10 +29,16 @@
         <!-- <el-col :span="6"><div class="grid-content bg-purple"></div></el-col> -->
         <!-- <el-col :span="6"><div class="grid-content bg-purple"></div></el-col> -->
     </el-row>
-    <el-table :data="cityList" style="width: 100%" max-height="1000">
-      <el-table-column fixed prop="cityId" label="编号" width="150" />
-      <el-table-column prop="cityName" label="地区名称" width="600" />
-      <el-table-column fixed="right" label="操作" width="500">
+    <el-table 
+      :data="cityList" 
+      style="width: 100%" 
+      max-height="1000" 
+      :header-cell-style="{textAlign: 'center'}"
+      :default-sort = "{prop: 'cityId', order: 'null'}"
+      >
+      <el-table-column fixed prop="cityId" label="编号" width="400" sortable align="center" />
+      <el-table-column prop="cityName" label="地区名称" width="600" align="center" />
+      <el-table-column fixed="right" label="操作" width="500" align="center" >
         <template slot-scope="scope">
           <el-button
             type="primary"

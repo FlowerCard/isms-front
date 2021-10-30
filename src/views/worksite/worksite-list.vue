@@ -29,14 +29,14 @@
         <!-- <el-col :span="6"><div class="grid-content bg-purple"></div></el-col> -->
         <!-- <el-col :span="6"><div class="grid-content bg-purple"></div></el-col> -->
     </el-row>
-    <el-table :data="worksiteList" style="width: 100%" max-height="1000">
-      <el-table-column fixed prop="workId" label="编号" width="150" />
-      <el-table-column prop="workName" label="工地名称" width="200" />
-      <el-table-column prop="city.cityName" label="工地地区" width="200" />
-      <el-table-column prop="createTime" label="开工时间" width="200" />
-      <el-table-column prop="updateTime" label="更新时间" width="220" />
-      <el-table-column prop="workAddr" label="工地地址" width="800" />
-      <el-table-column fixed="right" label="操作" width="200">
+    <el-table :data="worksiteList" style="width: 100%" max-height="1000" :default-sort = "{prop: 'workId', order: 'null'}">
+      <el-table-column fixed prop="workId" label="编号" width="150" sortable align="center" />
+      <el-table-column prop="workName" label="工地名称" width="200" align="center" />
+      <el-table-column prop="city.cityName" label="工地地区" width="200" align="center" />
+      <el-table-column prop="createTime" label="开工时间" width="200" sortable align="center" />
+      <el-table-column prop="updateTime" label="更新时间" width="220" sortable align="center" />
+      <el-table-column prop="workAddr" label="工地地址" width="500" align="center" />
+      <el-table-column fixed="right" label="操作" width="200" align="center" >
         <template slot-scope="scope">
           <el-button
             type="primary"
