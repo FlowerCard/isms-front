@@ -35,16 +35,16 @@
             </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="设备状态">
+        <!-- <el-form-item label="设备状态">
             <el-radio-group v-model="fromData.isDelete">
             <el-radio :label="0" value="0">正常</el-radio>
             <el-radio :label="1" value="1">注销</el-radio>
             </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item>
             <el-button type="primary" :disabled="disabled" @click="onSubmit">提交</el-button>
-            <el-button>取消</el-button>
+            <el-button @click="qx">取消</el-button>
         </el-form-item>
     </el-form>
   </div>
@@ -146,6 +146,9 @@ export default {
         saveState() {
         // 模块化后，调用 state 的代码修改为 this.$store.state.myuser
         sessionStorage.setItem('userState', JSON.stringify(this.$store.state.myuser));
+        },
+        qx(){
+             this.$router.push("/machine/machine-list")
         }
     },
 }
