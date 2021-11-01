@@ -44,7 +44,7 @@ export default {
       worksiteInfo: {
         workId: this.$route.params.workId
       },
-      disabled: true
+      disabled: false
     }
   },
   mounted() {
@@ -77,9 +77,11 @@ export default {
         url: 'http://localhost:8081/worksite/worksite/' + obj.worksiteInfo.workName
       }).then(function(res) {
         var flag  = res.data
-        obj.disabled = !flag
-        if (!flag) {
-            obj.$message.error('已存在，请更换名称')
+        if (flag == 1) {
+          obj.disabled = !obj.disabled
+          obj.$message.error('已存在，请更换名称')
+        } else if (flag == 0) {
+          obj.disabled = !obj.disabled
         }
       })
     },
