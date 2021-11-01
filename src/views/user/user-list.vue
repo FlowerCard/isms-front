@@ -9,9 +9,9 @@
     </el-col>
     <el-col :span="6">
       <span>身份:</span>
-        <el-select v-model="uid" placeholder="请选择" @change="getList()">
+        <el-select v-model="selectRole" placeholder="请选择" @change="getList()">
           <el-option label="请选择" value=""></el-option>
-           <el-option v-for="item in typeNames" :key="item.uid" :value="item.uid" :label="item.label"></el-option>
+           <el-option v-for="item in typeNames" :key="item.isAdmins" :value="item.isAdmins" :label="item.label"></el-option>
         </el-select>
     </el-col>
   </el-row>
@@ -101,15 +101,16 @@ import Pagination from '@/components/Pagination'
         fuzzy:'',
         typeNames:[
           {
-            uid: '0',
+            isAdmins: '0',
             label: '员工'
           },
           {
-            uid: '1',
+            isAdmins: '1',
             label: '管理员'
           }
           ],
-          isAdmin:''
+          isAdmin:'',
+          selectRole:''
       }
     },
     created(){
@@ -126,7 +127,7 @@ import Pagination from '@/components/Pagination'
             this.axios({
                 method:"get",
                 url:"http://localhost:8081/user/findAll/"+this.listQuery.page+"/"+this.listQuery.limit
-                +"?fuzzy="+this.fuzzy+"&uid="+this.uid
+                +"?fuzzy="+this.fuzzy+"&isAdmin="+this.selectRole 
             }).then(function(response){
                  var result = response.data;
                  if(result.code == 1){
