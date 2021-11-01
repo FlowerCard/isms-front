@@ -71,7 +71,7 @@ export default {
   components: { Pagination },
   data() {
     return {
-      cityList: null,
+      cityList: [],
       total: 0,
       listQuery: {
         page: 1,
@@ -80,7 +80,7 @@ export default {
       searchName: '',
       isAdmin:'',
       cityId: '',
-      options: null
+      options: []
     }
   },
   created(){

@@ -69,7 +69,7 @@ export default {
   components: { Pagination },
   data() {
     return {
-      worksiteList: null,
+      worksiteList: [],
       total: 0,
       listQuery: {
         page: 1,
@@ -79,7 +79,7 @@ export default {
       isAdmin:'',
       searchName: '',
       cityId: '',
-      options: null
+      options: []
     }
   },
   created(){
