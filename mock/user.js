@@ -29,8 +29,9 @@ module.exports = [
     url: '/vue-admin-template/user/login',
     type: 'post',
     response: config => {
-      const { username } = config.body
-      const token = tokens[username]
+      //const { username } = config.body
+      //const token = tokens[username]
+      const token = 'admin-token'//写死：每个用户都是管理员的权限 
 
       // mock error
       if (!token) {

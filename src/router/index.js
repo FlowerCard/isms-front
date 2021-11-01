@@ -51,111 +51,151 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '智慧工地管理系统', icon: 'dashboard' }
     }]
   },
 
   {
-    path: '/example',
+    path: '/user',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    redirect: '/user/user-list',
+    name: 'user',
+    meta: { title: '员工信息', icon: 'peoples' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'user-list',
+        name: 'user-list',
+        component: () => import('@/views/user/user-list'),
+        meta: { title: '员工列表', icon: 'el-icon-s-custom' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
+        path: 'update-user/:uid',
+        name: 'update-user',
+        hidden: true,
+        component: () => import('@/views/user/update-user'),
+        meta: { title: '修改员工', icon: 'tree' }
       },
       {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
+        path: 'add-user',
+        name: 'add-user',
+        component: () => import('@/views/user/add-user'),
+        meta: { title: '添加员工', icon: 'el-icon-circle-plus-outline' }
+      },
+    ]
+  },
+
+  {
+    path: '/machine_type',
+    component: Layout,
+    redirect: '/machine_type/machine_type-list',
+    name: 'machine_type',
+    meta: { title: '设备类型管理', icon: 'el-icon-notebook-1' },
+    children: [
+      {
+        path: 'machine_type-list',
+        name: 'machine_type-list',
+        component: () => import('@/views/machine_type/machine_type-list'),
+        meta: { title: '设备类型列表', icon: 'el-icon-notebook-2' }
+      },
+      {
+        path: 'machine_type-update/:typeId',
+        name: 'machine_type-update',
+        hidden: true,
+        component: () => import('@/views/machine_type/machine_type-update'),
+        meta: { title: '修改设备类型', icon: 'tree' }
+      },
+      {
+        path: 'machine_type-add',
+        name: 'machine_type-add',
+        component: () => import('@/views/machine_type/machine_type-add'),
+        meta: { title: '添加设备类型', icon: 'el-icon-circle-plus-outline' }
+      },
+    ]
+  },
+
+  {
+    path: '/machine',
+    component: Layout,
+    redirect: '/machine/machine-list',
+    name: 'machine',
+    meta: { title: '设备管理', icon: 'el-icon-collection' },
+    children: [
+      {
+        path: 'machine-list',
+        name: 'machine-list',
+        component: () => import('@/views/machine/machine-list'),
+        meta: { title: '设备列表', icon: 'el-icon-tickets' }
+      },
+      {
+        path: 'machine-update/:mid',
+        name: 'machine-update',
+        hidden: true,
+        component: () => import('@/views/machine/machine-update'),
+        meta: { title: '修改设备', icon: 'tree' }
+      },
+      {
+        path: 'machine-add',
+        name: 'machine-add',
+        component: () => import('@/views/machine/machine-add'),
+        meta: { title: '添加设备', icon: 'el-icon-circle-plus-outline' }
+      },
+    ]
+  },
+
+  {
+    path: '/city',
+    component: Layout,
+    redirect: '/city/cityList',
+    name: 'City',
+    meta: { title: '地区管理', icon: 'el-icon-office-building' },
+    children: [
+      {
+        path: 'cityList',
+        name: 'cityList',
+        component: () => import('@/views/city/city-list'),
+        meta: { title: '地区列表', icon: 'el-icon-school' }
+      },
+      {
+        path: 'addCity',
+        name: 'addCity',
+        component: () => import('@/views/city/city-add'),
+        meta: { title: '新增地区', icon: 'el-icon-circle-plus-outline' }
+      },
+      {
+        path: 'modifyCity/:cityId',
+        name: 'modifyCity',
+        component: () => import('@/views/city/city-modify'),
+        meta: { title: '修改地区' },
+        hidden: true
       }
     ]
   },
 
   {
-    path: 'external-link',
+    path: '/worksite',
     component: Layout,
+    redirect: '/worksite/worksiteList',
+    name: 'Worksite',
+    meta: { title: '工地管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: 'worksiteList',
+        name: 'worksiteList',
+        component: () => import('@/views/worksite/worksite-list'),
+        meta: { title: '工地列表', icon: 'table' }
+      },
+      {
+        path: 'addWorksite',
+        name: 'addWorksite',
+        component: () => import('@/views/worksite/worksite-add'),
+        meta: { title: '新增工地', icon: 'el-icon-circle-plus-outline' }
+      },
+      {
+        path: 'modifyWorksite/:workId',
+        name: 'modifyWorksite',
+        component: () => import('@/views/worksite/worksite-modify'),
+        meta: { title: '修改工地' },
+        hidden: true
       }
     ]
   },
