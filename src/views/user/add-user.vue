@@ -12,7 +12,7 @@
         </el-form-item> -->
 
         <el-form-item label="密码" prop="password">
-            <el-input type="text" v-model="fromData.password" autocomplete="off"></el-input>
+            <el-input type="password" v-model="fromData.password" autocomplete="off"></el-input>
         </el-form-item>
 
         <el-form-item label="确认密码" prop="checkPass">

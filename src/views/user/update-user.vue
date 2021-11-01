@@ -9,7 +9,7 @@
             <el-input v-model="fromData.username"  @change="existsName()"></el-input>
         </el-form-item>
          <el-form-item label="密码">
-            <el-input v-model="fromData.password"></el-input>
+            <el-input v-model="fromData.password" type="password"></el-input>
         </el-form-item>
          <!-- <el-form-item label="昵称">
             <el-input v-model="fromData.nickname"></el-input>
