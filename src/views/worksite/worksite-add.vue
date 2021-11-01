@@ -81,7 +81,6 @@ export default {
     //关键！！！：从浏览器缓存中获取myuser对象中的id值
     var myuser = this.$store.getters.getUser;
     this.worksiteInfo.uid = myuser.uid;
-    console.log("store:" + this.uid);
   },
   mounted() {
     //防止刷新后数据丢失
@@ -95,7 +94,7 @@ export default {
       if (result.code == 1) {
         obj.options = result.data;
       } else {
-        alert(result.message);
+        obj.$message.error(result.message);
       }
     });
   },
@@ -107,7 +106,7 @@ export default {
         url:
           "http://localhost:8081/worksite/worksite/" +
           obj.worksiteInfo.workName,
-        data: obj.cityInfo,
+          data: obj.cityInfo,
       }).then(function (res) {
         var flag = res.data;
         obj.disabled = !flag;
@@ -137,7 +136,6 @@ export default {
             }
           });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });

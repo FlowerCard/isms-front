@@ -42,12 +42,12 @@
             <el-button
               type="primary"
               plain
-              @click="modifyUser(scope.row.workId)"
+              @click="modifyWorksite(scope.row.workId)"
             >修改</el-button>
             <el-button
               type="danger"
               plain
-              @click="removeUser(scope.row.workId)"
+              @click="removeWorksite(scope.row.workId)"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -107,7 +107,8 @@ export default {
         obj.worksiteList = result.data.list
         obj.total = result.data.total
       } else {
-          alert(result.message)
+        obj.worksiteList = []
+        obj.$message.error(result.message)
       }
       
     })
@@ -119,7 +120,7 @@ export default {
       if (result.code == 1) {
         obj.options = result.data
       } else {
-          alert(result.message)
+          obj.$message.error(result.message)
       }
       
     })
@@ -142,14 +143,19 @@ export default {
         obj.listQuery.limit + "?searchName=" + obj.searchName + "&cityId=" + obj.cityId
       }).then(function(res) {
         var result = res.data
-        obj.worksiteList = result.data.list
-        obj.total = result.data.total
+        if (result.code == 1) {
+          obj.worksiteList = result.data.list
+          obj.total = result.data.total
+        } else {
+          obj.worksiteList = []
+          obj.$message.error("暂无工地记录")
+        }
       })
     },
-    modifyUser(workId) {
+    modifyWorksite(workId) {
       this.$router.push('/worksite/modifyWorksite/' + workId)
     },
-    removeUser(workId) {
+    removeWorksite(workId) {
       var obj = this
       this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -169,7 +175,7 @@ export default {
                 })
                 obj.getList()
             } else {
-                obj.$message.error(result.message)
+                obj.$message.error("该工地下还有设备，如需删除请确保该工地下没有设备")
             }
           })
         })

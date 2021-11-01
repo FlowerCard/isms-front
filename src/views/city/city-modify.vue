@@ -4,6 +4,7 @@
     <el-form
       ref="cityInfo"
       :model="cityInfo"
+      :rules="rules"
       status-icon
       label-width="100px"
       class="demo-ruleForm"
@@ -30,7 +31,12 @@ export default {
       cityInfo: {
         cityId: this.$route.params.cityId
       },
-      disabled: false
+      disabled: false,
+      rules: {
+        cityName: [
+          { required: true, message: "请输入地区名称", trigger: "change" },
+        ],
+      }
     }
   },
   mounted() {
@@ -53,31 +59,38 @@ export default {
       }).then(function(res) {
         var flag  = res.data
         if (flag) {
-          obj.disabled = obj.disabled
+          obj.disabled = false
         } else {
-          obj.disabled = !obj.disabled
+          obj.disabled = true
           obj.$message.error('已存在，请更换名称')
         }
       })
     },
     submitForm(formName) {
       var obj = this
-      this.axios({
-        method: 'PUT',
-        url: 'http://localhost:8081/city/city/',
-        data: obj.cityInfo
-      }).then(function(res) {
-        var flag = res.data
-        if (flag.code == 1) {
-          obj.$message({
-            message: flag.message,
-            type: 'success'
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.axios({
+            method: 'PUT',
+            url: 'http://localhost:8081/city/city/',
+            data: obj.cityInfo
+          }).then(function(res) {
+            var flag = res.data
+            if (flag.code == 1) {
+              obj.$message({
+                message: flag.message,
+                type: 'success'
+              })
+              obj.$router.push('/city/cityList')
+            } else {
+              obj.$message.error(flag.message)
+            }
           })
-          obj.$router.push('/city/cityList')
         } else {
-          obj.$message.error(flag.message)
+          return false;
         }
-      })
+        
+      });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
