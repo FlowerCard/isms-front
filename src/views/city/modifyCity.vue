@@ -52,11 +52,11 @@ export default {
         data: obj.cityInfo
       }).then(function(res) {
         var flag  = res.data
-        if (flag == 1) {
+        if (flag) {
+          obj.disabled = obj.disabled
+        } else {
           obj.disabled = !obj.disabled
           obj.$message.error('已存在，请更换名称')
-        } else if (flag == 0) {
-          obj.disabled = !obj.disabled
         }
       })
     },
