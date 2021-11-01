@@ -5,6 +5,7 @@
       ref="worksiteInfo"
       :model="worksiteInfo"
       status-icon
+      :rules="rules"
       label-width="100px"
       class="demo-ruleForm"
     >
@@ -40,11 +41,22 @@
 export default {
   data() {
     return {
-      options: null,
+      options: [],
       worksiteInfo: {
         workId: this.$route.params.workId
       },
-      disabled: false
+      disabled: false,
+      rules: {
+        workName: [
+          { required: true, message: "请输入工地名称", trigger: "blur" },
+        ],
+        cityId: [
+          { required: true, message: "请选择工地地区", trigger: "change" },
+        ],
+        workAddr: [
+          { required: true, message: "请输入工作地址", trigger: "change" },
+        ]
+      }
     }
   },
   mounted() {
@@ -64,7 +76,7 @@ export default {
       if (result.code == 1) {
         obj.options = result.data
       } else {
-          alert(result.message)
+          obj.$message.error(result.message)
       }
       
     })
@@ -77,32 +89,38 @@ export default {
         url: 'http://localhost:8081/worksite/worksite/' + obj.worksiteInfo.workName
       }).then(function(res) {
         var flag  = res.data
-        if (flag == 1) {
-          obj.disabled = !obj.disabled
+        if (flag) {
+          obj.disabled = false
+        } else {
+          obj.disabled = true
           obj.$message.error('已存在，请更换名称')
-        } else if (flag == 0) {
-          obj.disabled = !obj.disabled
         }
       })
     },
     submitForm(formName) {
       var obj = this
-      this.axios({
-        method: 'PUT',
-        url: 'http://localhost:8081/worksite/worksite',
-        data: obj.worksiteInfo
-      }).then(function(res) {
-        var flag = res.data
-        if (flag.code == 1) {
-          obj.$message({
-            message: flag.message,
-            type: 'success'
-          })
-          obj.$router.push('/worksite/worksiteList')
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.axios({
+            method: "PUT",
+            url: "http://localhost:8081/worksite/worksite/",
+            data: obj.worksiteInfo,
+          }).then(function (res) {
+            var flag = res.data;
+            if (flag.code == 1) {
+              obj.$message({
+                message: flag.message,
+                type: "success",
+              });
+              obj.$router.push("/worksite/worksiteList");
+            } else {
+              obj.$message.error(flag.message);
+            }
+          });
         } else {
-          obj.$message.error(flag.message)
+          return false;
         }
-      })
+      });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()

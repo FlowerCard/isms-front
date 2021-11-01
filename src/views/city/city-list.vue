@@ -44,12 +44,12 @@
             <el-button
               type="primary"
               plain
-              @click="modifyUser(scope.row.cityId)"
+              @click="modifyCity(scope.row.cityId)"
             >修改</el-button>
             <el-button
               type="danger"
               plain
-              @click="removeUser(scope.row.cityId)"
+              @click="removeCity(scope.row.cityId)"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -106,7 +106,8 @@ export default {
         obj.cityList = result.data.list
         obj.total = result.data.total
       } else {
-          alert(result.message)
+        obj.cityList = []
+        obj.$message.error('暂无地区记录')
       }
       
     })
@@ -118,7 +119,7 @@ export default {
       if (result.code == 1) {
         obj.options = result.data
       } else {
-          alert(result.message)
+        obj.$message.error('暂无记录')
       }
       
     })
@@ -136,14 +137,19 @@ export default {
           obj.listQuery.limit + "?searchName=" + obj.searchName + "&cityId=" + obj.cityId
       }).then(function(res) {
         var result = res.data
-        obj.cityList = result.data.list
-        obj.total = result.data.total
+        if (result.code ==1) {
+          obj.cityList = result.data.list
+          obj.total = result.data.total
+        } else {
+          obj.cityList = []
+          obj.$message.error('暂无地区记录')
+        }
       })
     },
-    modifyUser(cityId) {
+    modifyCity(cityId) {
       this.$router.push('/city/modifyCity/' + cityId)
     },
-    removeUser(cityId) {
+    removeCity(cityId) {
       var obj = this
       this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -162,7 +168,7 @@ export default {
                 })
                 obj.getList()
             } else {
-                obj.$message.error('删除失败')
+                obj.$message.error('该地区下还有工地记录，如需删除请确保该地区没有工地记录')
             }
           })
         })

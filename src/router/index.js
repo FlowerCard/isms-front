@@ -152,19 +152,19 @@ export const constantRoutes = [
       {
         path: 'cityList',
         name: 'cityList',
-        component: () => import('@/views/city/index'),
+        component: () => import('@/views/city/city-list'),
         meta: { title: '地区列表', icon: 'el-icon-school' }
       },
       {
         path: 'addCity',
         name: 'addCity',
-        component: () => import('@/views/city/addCity'),
+        component: () => import('@/views/city/city-add'),
         meta: { title: '新增地区', icon: 'el-icon-circle-plus-outline' }
       },
       {
         path: 'modifyCity/:cityId',
         name: 'modifyCity',
-        component: () => import('@/views/city/modifyCity'),
+        component: () => import('@/views/city/city-modify'),
         meta: { title: '修改地区' },
         hidden: true
       }
