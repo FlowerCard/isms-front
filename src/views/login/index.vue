@@ -119,7 +119,6 @@ export default {
             }).then(function(response){
               var data = response.data;
               if(data.code==1){
-                console.log(data);
                 //登陆成功
                 // console.log(data.data.uid)
                 //创建myuser对象，存放后端返回的id
