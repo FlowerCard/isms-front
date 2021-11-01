@@ -1,7 +1,7 @@
 <template>
   <div id="box">
-      <h2 style="text-align: center">修改设备</h2>
-      <el-form ref="form" :model="fromData" label-width="80px">
+      <h2 style="text-align: center">修改设备类型名称</h2>
+      <el-form ref="form" :model="fromData" label-width="120px">
 
             <el-input v-model="fromData.typeId" type="hidden"></el-input>
 
@@ -9,12 +9,12 @@
             <el-input v-model="fromData.typeName"  @change="existsName()"></el-input>
         </el-form-item>
 
-        <el-form-item label="设备类型状态">
+        <!-- <el-form-item label="设备类型状态">
             <el-radio-group v-model="fromData.isDelete">
             <el-radio :label="1" value="1">注销</el-radio>
             <el-radio :label="0" value="0">正常</el-radio>
             </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item>
             <el-button type="primary" :disabled="disabled" @click="onSubmit">提交</el-button>

@@ -12,7 +12,7 @@
         </el-form-item> -->
 
         <el-form-item label="密码" prop="password">
-            <el-input type="text" v-model="fromData.password" autocomplete="off"></el-input>
+            <el-input type="password" v-model="fromData.password" autocomplete="off"></el-input>
         </el-form-item>
 
         <el-form-item label="确认密码" prop="checkPass">
@@ -36,7 +36,7 @@
 
 
         <el-form-item>
-            <el-button type="primary" :disabled="disabled" @click="submitForm()">提交</el-button>
+            <el-button type="primary" :disabled="disabled" @click="submitForm('fromData')">提交</el-button>
             <el-button @click="resetForm('fromData')">重置</el-button>
         </el-form-item>
     </el-form>
@@ -120,8 +120,10 @@
       };
     },
     methods: {
-      submitForm() {
-          const obj = this;
+      submitForm(formName) {
+           this.$refs[formName].validate((valid) => {
+          if (valid) {
+            const obj = this;
           this.axios({
               method:"post",
               url:"http://localhost:8081/user/addUser",
@@ -142,6 +144,12 @@
                     obj.$message.error('呀~出现了意料之外的问题呢！');
                 }
           })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+          
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

@@ -9,15 +9,15 @@
             <el-input v-model="fromData.mname"  @change="existsName()"></el-input>
         </el-form-item>
 
-         <el-form-item label="所属设备">
-            <el-select v-model="typeNameQuert" >
+         <el-form-item label="所属设备" > 
+            <el-select v-model="fromData.typeId" >
                 <el-option v-for="item in typeNames" :key="item.typeId" :value="item.typeId" :label="item.typeName"></el-option>
             </el-select>
         </el-form-item>
 
         <el-form-item label="所属工地">
-            <el-select v-model="workNameQuert" >
-                <el-option v-for="item in workNames" :key="item.value" :value="item.value" :label="item.label"></el-option>
+            <el-select v-model="fromData.workId" >
+                <el-option v-for="item1 in workNames" :key="item1.workId" :value="item1.workId" :label="item1.workName"></el-option>
             </el-select>
         </el-form-item>
 
@@ -56,28 +56,30 @@ export default {
         return {
             fromData:{
                 mid:this.$route.params.mid,
-                typeName:"",
-                isDelete:""
+                cityId:0
             },
             disabled:false,
-            typeNames:[],
-            typeNameQuert:0,
+            typeNames:[],            
             workNames:[],
-            workNameQuert:0
+            uid:0
         }
     },
+    created(){
+    var myuser = this.$store.getters.getUser;  
+    this.uid = myuser.uid;
+  },
     mounted() {
+          //防止刷新后数据丢失
+        window.addEventListener('unload', this.saveState);
+
         const obj = this;
         obj.axios({
             method:"get",
             url:"http://localhost:8081/machine/findById/"+this.fromData.mid,
         }).then(function(respones){
             const ret = respones.data;
-            console.log(ret);
             if(ret.code==1){
                 obj.fromData = ret.data
-                obj.typeNameQuert = ret.data.typeId
-                obj.workNameQuert = ret.data.workId
             }
         }),
 
@@ -89,6 +91,16 @@ export default {
             if(ret.code==1){
                 obj.typeNames = ret.data
             }
+        }),
+
+        obj.axios({
+            method:"get",
+            url:"http://localhost:8081/machine/findWorksiteNames",
+        }).then(function(respones){
+            const ret = respones.data;
+            if(ret.code==1){
+                obj.workNames = ret.data
+            }
         })
     },
     methods: {
@@ -96,7 +108,7 @@ export default {
             const obj = this;
             this.axios({
                 method:"put",
-                url:"http://localhost:8081/type/modifyMachineType",
+                url:"http://localhost:8081/machine/modifyMachine",
                 data:this.fromData
             }).then(function(respones){
                 const ret = respones.data;
@@ -108,7 +120,7 @@ export default {
 
                 // 延时跳转
                 setTimeout(function(){
-                obj.$router.push("/machine_type/machine_type-list")
+                obj.$router.push("/machine/machine-list")
                 },1000)
                 }else{
                     obj.$message.error('哎呀~出现了意料以外的问题呢~~');
@@ -119,7 +131,7 @@ export default {
               const obj = this;
             this.axios({
                 method:"get",
-                url:"http://localhost:8081/type/existsName/"+obj.fromData.typeName,
+                url:"http://localhost:8081/machine/existsName/"+obj.fromData.mname,
             }).then(function(respones){
                 const ret = respones.data;
                 if(ret.code == 1){
@@ -130,6 +142,10 @@ export default {
                     obj.disabled = false;
                 }
             })
+        },
+        saveState() {
+        // 模块化后，调用 state 的代码修改为 this.$store.state.myuser
+        sessionStorage.setItem('userState', JSON.stringify(this.$store.state.myuser));
         }
     },
 }
