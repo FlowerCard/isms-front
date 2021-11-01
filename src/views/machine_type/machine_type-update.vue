@@ -18,7 +18,7 @@
 
         <el-form-item>
             <el-button type="primary" :disabled="disabled" @click="onSubmit">提交</el-button>
-            <el-button>取消</el-button>
+            <el-button @click="qx">取消</el-button>
         </el-form-item>
     </el-form>
   </div>
@@ -87,6 +87,9 @@ export default {
                     obj.disabled = false;
                 }
             })
+        },
+        qx(){
+            this.$router.push("/machine_type/machine_type-list")
         }
     },
 }
